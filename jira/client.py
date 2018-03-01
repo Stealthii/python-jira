@@ -535,7 +535,8 @@ class JIRA(object):
             if not maxResults:
                 page_size = max_results_from_response or len(items)
                 page_start = (startAt or start_at_from_response or 0) + page_size
-                if async_class is not None and not is_last:
+                if async_class is not None and not is_last and (
+                        total is None or len(items) < total):
                     async_fetches = []
                     future_session = async_class(session=self._session)
                     for start_index in range(page_start, total, page_size):
